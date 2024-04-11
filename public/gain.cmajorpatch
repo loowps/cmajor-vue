@@ -1,0 +1,19 @@
+{
+    "CmajorVersion":    1,
+    "ID":               "loowps.cmajor.gain.vue",
+    "version":          "1.0",
+    "name":             "Gain plugin",
+    "description":      "A simple gain plugin with Vue-based GUI",
+    "category":         "effect",
+    "manufacturer":     "Loowps",
+    "isInstrument":     false,
+
+    "source":           "Gain.cmajor",
+
+    "view":             {
+                            "src": "main.js",
+                            "width": "420px",
+                            "height": "166px",
+                            "resizable": true
+                        }
+}
