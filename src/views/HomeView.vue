@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useParameterStore } from '@/stores/counter'
+import { useParameterStore } from '@/stores/parameter'
 import { storeToRefs } from 'pinia'
 import { inject, onMounted } from 'vue'
 import type { PatchConnection } from '@/models/patch-connection.model'
