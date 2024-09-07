@@ -60,13 +60,13 @@ header .wrapper {
 }
 
 nav {
-  @media screen and (min-width: 265px) {
-    margin-left: auto;
-  }
-
   display: flex;
   text-align: left;
   font-size: 1rem;
+
+  @media screen and (min-width: 265px) {
+    margin-left: auto;
+  }
 }
 
 nav a.router-link-exact-active {
