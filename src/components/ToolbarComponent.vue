@@ -11,13 +11,13 @@ const isHome = computed(() => {
 
 <template>
   <header>
-    <a class="logo" href="https://github.com/loowps/cmajor-vue-js" target="_blank">
+    <a class="logo" href="https://github.com/loowps/cmajor-vue" target="_blank">
       <img alt="Vue logo" class="img" src="@/assets/logo.svg" width="30" height="30" />
       <span>Cmajor + VueJs</span>
     </a>
     <nav>
-      <RouterLink to="/" v-if="!isHome">Home</RouterLink>
-      <RouterLink to="/about" v-else>About</RouterLink>
+      <RouterLink v-if="!isHome" to="/">Home</RouterLink>
+      <RouterLink v-else to="/about">About</RouterLink>
     </nav>
   </header>
 </template>

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, type ModelRef } from 'vue'
+import { computed } from 'vue'
 
-defineProps({
+const { label = '' } = defineProps({
   label: String
 })
-const model: ModelRef<number> = defineModel({ required: true })
+const model = defineModel<number>({ required: true })
 
 const emit = defineEmits<{
   mouseDown: [MouseEvent]
@@ -19,8 +19,9 @@ const onMouseDown = (evt: MouseEvent) => {
   emit('mouseDown', evt)
 }
 
-const onValueChange = (evt: any) => {
-  emit('valueChange', evt.target?.value)
+const onValueChange = (evt: Event) => {
+  const el = evt.target as HTMLInputElement
+  emit('valueChange', Number(el.value))
 }
 </script>
 
@@ -29,11 +30,11 @@ const onValueChange = (evt: any) => {
     <label for="slider">{{ label }}</label>
     <input
       id="slider"
+      v-model="model"
       class="slider"
       type="range"
       min="0"
       max="1"
-      v-model="model"
       step="0.0001"
       @mousedown="onMouseDown"
       @input="onValueChange"
