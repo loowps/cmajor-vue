@@ -32,7 +32,7 @@ function onMouseUp() {
   endValueChange()
 }
 
-function onMouseDown(event: any) {
+function onMouseDown(event: MouseEvent) {
   if (event.detail === 2) {
     return
   }
@@ -52,8 +52,8 @@ const onValueChange = (newValue: number) => {
 <template>
   <main>
     <SliderComponent
-      label="Gain"
       v-model="gain"
+      label="Gain"
       @mouse-down="onMouseDown"
       @value-change="onValueChange"
     />
