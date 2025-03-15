@@ -4,12 +4,12 @@
 
 Proof of concept [cmajor] gain fx patch with [vuejs] gui.
 
-To test the patch simply run `npm install` and `npm run build`. Afterward drag the .cmajorpatch from
+To test the patch simply run `pnpm install` and `pnpm run build`. Afterward drag the .cmajorpatch from
 the dist directory to the cmaj-plugin within your daw or play the patch via the cmaj command line tool.
 
-For development use `npm run build-dev` to rebuild the patch on change.
+For development use `pnpm run build-dev` to rebuild the patch on change.
 
-Tested with Cmajor Version: 1.0.2358 running the cmaj-plugin in Bitwig v5.1.6 on Windows 10.
+Tested with Cmajor Version: 1.0.2724 running the cmaj-plugin in Bitwig v5.3.2 on Windows 10.
 
 #### Known issues / future improvements
 
