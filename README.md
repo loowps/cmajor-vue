@@ -9,7 +9,7 @@ the dist directory to the cmaj-plugin within your daw or play the patch via the 
 
 For development use `pnpm run build-dev` to rebuild the patch on change.
 
-Tested with Cmajor Version: 1.0.2944 running the cmaj-plugin in Bitwig v5.3.13 on Windows 11.
+Tested with Cmajor Version: 1.0.2944 running the cmaj-plugin in Bitwig v6.0 on Windows 11.
 
 #### Known issues / future improvements
 
