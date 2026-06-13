@@ -1,5 +1,4 @@
 import eslint from '@eslint/js'
-import eslintConfigPrettier from 'eslint-config-prettier'
 import eslintPluginVue from 'eslint-plugin-vue'
 import typescriptEslint from 'typescript-eslint'
 
@@ -9,7 +8,7 @@ export default typescriptEslint.config(
     extends: [
       eslint.configs.recommended,
       ...typescriptEslint.configs.recommended,
-      ...eslintPluginVue.configs['flat/recommended']
+      ...eslintPluginVue.configs['flat/essential']
     ],
     files: ['**/*.{ts,vue,js,jsx,tsx,cjs,mjs,cts,mts}'],
     languageOptions: {
@@ -22,6 +21,5 @@ export default typescriptEslint.config(
     rules: {
       '@typescript-eslint/no-explicit-any': 'off'
     }
-  },
-  eslintConfigPrettier
+  }
 )
