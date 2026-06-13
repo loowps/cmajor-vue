@@ -4,7 +4,7 @@ import ToolbarComponent from '@/components/ToolbarComponent.vue'
 </script>
 
 <template>
-  <ToolbarComponent></ToolbarComponent>
+  <ToolbarComponent />
 
   <div class="main">
     <RouterView v-slot="{ Component }">

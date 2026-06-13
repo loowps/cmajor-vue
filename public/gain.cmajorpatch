@@ -13,7 +13,7 @@
     "view":             {
                             "src": "main.js",
                             "width": "420px",
-                            "height": "166px",
+                            "height": "240px",
                             "resizable": true
                         }
 }
