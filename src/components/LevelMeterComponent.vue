@@ -15,14 +15,15 @@ interface ChannelState {
   display: number
   peak: number
   peakSetAt: number
+  clipped: boolean
 }
 
-const channels = reactive<ChannelState[]>(levels.map(() => ({ display: 0, peak: 0, peakSetAt: 0 })))
+const channels = reactive<ChannelState[]>(
+  levels.map(() => ({ display: 0, peak: 0, peakSetAt: 0, clipped: false }))
+)
 
 function toNormalized(linear: number): number {
-  if (linear <= 0) {
-    return 0
-  }
+  if (linear <= 0) return 0
   const db = 20 * Math.log10(linear)
   return Math.min(1, Math.max(0, (db - minDb) / (maxDb - minDb)))
 }
@@ -35,7 +36,8 @@ function tick(now: number) {
 
   levels.forEach((linear, index) => {
     const target = toNormalized(linear)
-    const channel = channels[index] ?? (channels[index] = { display: 0, peak: 0, peakSetAt: 0 })
+    const channel =
+      channels[index] ?? (channels[index] = { display: 0, peak: 0, peakSetAt: 0, clipped: false })
 
     channel.display =
       target >= channel.display
@@ -48,6 +50,8 @@ function tick(now: number) {
     } else if (now - channel.peakSetAt > peakHoldMs) {
       channel.peak = Math.max(channel.display, channel.peak - decayPerSecond * elapsedSeconds)
     }
+
+    if (linear >= 1.0) channel.clipped = true
   })
 
   rafId = requestAnimationFrame(tick)
@@ -56,15 +60,24 @@ function tick(now: number) {
 let rafId = requestAnimationFrame(tick)
 
 onBeforeUnmount(() => cancelAnimationFrame(rafId))
+
+function clearAllClips() {
+  channels.forEach((channel) => (channel.clipped = false))
+}
 </script>
 
 <template>
-  <div class="meters">
+  <div class="meters" @click="clearAllClips">
     <div v-for="(channel, index) in channels" :key="index" class="meter">
       <span class="label">{{ labels[index] }}</span>
       <div class="track">
         <div class="unlit" :style="{ width: (1 - channel.display) * 100 + '%' }"></div>
-        <div class="peak" :style="{ left: channel.peak * 100 + '%' }"></div>
+        <div
+          v-if="channel.peak > 0"
+          class="peak"
+          :style="{ left: `min(calc(100% - 16px), ${channel.peak * 100}%)` }"
+        ></div>
+        <div class="clip-indicator" :class="{ active: channel.clipped }"></div>
       </div>
     </div>
   </div>
@@ -75,6 +88,7 @@ onBeforeUnmount(() => cancelAnimationFrame(rafId))
   display: flex;
   flex-direction: column;
   gap: 10px;
+  cursor: pointer;
 }
 
 .meter {
@@ -91,7 +105,7 @@ onBeforeUnmount(() => cancelAnimationFrame(rafId))
 
 .track {
   position: relative;
-  width: 100%;
+  flex: 1;
   height: 10px;
   border-radius: 15px;
   overflow: hidden;
@@ -113,5 +127,21 @@ onBeforeUnmount(() => cancelAnimationFrame(rafId))
   width: 2px;
   transform: translateX(-1px);
   background: #f8f8f8;
+  z-index: 1;
+}
+
+.clip-indicator {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 14px;
+  z-index: 2;
+  background: transparent;
+  transition: background-color 150ms ease;
+
+  &.active {
+    background: #ff3520;
+  }
 }
 </style>
