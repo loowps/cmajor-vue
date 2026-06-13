@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { RouterLink, useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { computed } from 'vue'
 
 const route = useRoute()
+const router = useRouter()
 
-const isHome = computed(() => {
-  return route.path === '/'
-})
+const isHome = computed(() => route.path === '/')
+
+function navigate() {
+  router.push(isHome.value ? '/about' : '/')
+}
 </script>
 
 <template>
@@ -16,8 +19,9 @@ const isHome = computed(() => {
       <span>Cmajor + VueJs</span>
     </a>
     <nav>
-      <RouterLink v-if="!isHome" to="/">Home</RouterLink>
-      <RouterLink v-else to="/about">About</RouterLink>
+      <button class="nav-button" @click="navigate">
+        {{ isHome ? 'About' : 'Home' }}
+      </button>
     </nav>
   </header>
 </template>
@@ -32,21 +36,13 @@ header {
   flex-wrap: wrap;
 }
 
-header .wrapper {
-  display: flex;
-  place-items: flex-start;
-  flex-wrap: wrap;
-}
-
 .logo {
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
   place-items: center;
-
   color: #1f1f1f;
   text-decoration: none;
-
   transition: transform 50ms ease-in-out;
   transform-origin: center center;
 
@@ -60,30 +56,30 @@ header .wrapper {
 }
 
 nav {
-  display: flex;
-  text-align: left;
-  font-size: 1rem;
+  margin-left: auto;
+}
 
-  @media screen and (min-width: 265px) {
-    margin-left: auto;
+.nav-button {
+  padding: 4px 10px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  background: transparent;
+  color: #555a61;
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition:
+    background-color 100ms ease,
+    border-color 100ms ease;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.06);
+    border-color: rgba(0, 0, 0, 0.25);
   }
-}
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
+  &:active {
+    background: rgba(0, 0, 0, 0.1);
+  }
 }
 </style>

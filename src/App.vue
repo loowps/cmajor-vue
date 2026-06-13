@@ -1,17 +1,22 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import ToolbarComponent from '@/components/ToolbarComponent.vue'
+import pkg from '../package.json'
 </script>
 
 <template>
-  <ToolbarComponent></ToolbarComponent>
+  <div class="layout">
+    <ToolbarComponent />
 
-  <div class="main">
-    <RouterView v-slot="{ Component }">
-      <transition name="slide-fade">
-        <component :is="Component" />
-      </transition>
-    </RouterView>
+    <div class="main">
+      <RouterView v-slot="{ Component }">
+        <transition name="slide-fade" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </RouterView>
+    </div>
+
+    <footer>v{{ pkg.version }}</footer>
   </div>
 </template>
 
@@ -61,7 +66,24 @@ body {
   opacity: 0;
 }
 
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
 .main {
+  flex: 1;
   padding: 1rem;
+  overflow-y: auto;
+}
+
+footer {
+  padding: 4px 12px;
+  background-color: #2e3135;
+  color: #6e7278;
+  font-size: 0.7rem;
+  text-align: right;
+  user-select: none;
 }
 </style>
