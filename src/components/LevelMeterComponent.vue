@@ -71,7 +71,7 @@ function clearAllClips() {
     <div v-for="(channel, index) in channels" :key="index" class="meter">
       <span class="label">{{ labels[index] }}</span>
       <div class="track">
-        <div class="unlit" :style="{ width: (1 - channel.display) * 100 + '%' }"></div>
+        <div class="unlit" :style="{ width: `calc(${(1 - channel.display) * 100}% + ${channel.display * 14}px)` }"></div>
         <div
           v-if="channel.peak > 0"
           class="peak"
@@ -109,7 +109,9 @@ function clearAllClips() {
   height: 10px;
   border-radius: 15px;
   overflow: hidden;
-  background: linear-gradient(to right, #3cb079 0%, #3cb079 70%, #e6d22e 88%, #d6432e 100%);
+  background:
+    linear-gradient(#2a2d30, #2a2d30) right / 14px 100% no-repeat,
+    linear-gradient(to right, #3cb079 0%, #3cb079 70%, #e6d22e 88%, #d6432e 100%);
 }
 
 .unlit {
@@ -137,7 +139,7 @@ function clearAllClips() {
   bottom: 0;
   width: 14px;
   z-index: 2;
-  background: transparent;
+  background: #2a2d30;
   transition: background-color 150ms ease;
 
   &.active {
