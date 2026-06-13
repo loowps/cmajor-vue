@@ -71,7 +71,10 @@ function clearAllClips() {
     <div v-for="(channel, index) in channels" :key="index" class="meter">
       <span class="label">{{ labels[index] }}</span>
       <div class="track">
-        <div class="unlit" :style="{ width: `calc(${(1 - channel.display) * 100}% + ${channel.display * 14}px)` }"></div>
+        <div
+          class="unlit"
+          :style="{ width: `calc(${(1 - channel.display) * 100}% + ${channel.display * 14}px)` }"
+        ></div>
         <div
           v-if="channel.peak > 0"
           class="peak"
