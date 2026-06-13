@@ -8,7 +8,7 @@ import ToolbarComponent from '@/components/ToolbarComponent.vue'
 
   <div class="main">
     <RouterView v-slot="{ Component }">
-      <transition name="slide-fade">
+      <transition name="slide-fade" mode="out-in">
         <component :is="Component" />
       </transition>
     </RouterView>
