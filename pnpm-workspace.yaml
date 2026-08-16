@@ -2,3 +2,4 @@ engineStrict: true
 strictDepBuilds: true
 allowBuilds:
   '@parcel/watcher': true
+minimumReleaseAge: 1440
