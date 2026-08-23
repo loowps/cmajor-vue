@@ -11,6 +11,8 @@
     "dev": "vite",
     "build-dev": "run-p type-check-watch \"build-watch {@}\" --",
     "build": "run-p type-check \"build-only {@}\" --",
+    "build-clap": "run-s build generate-clap",
+    "generate-clap": "cmaj generate --target=clap --clapIncludePath=../clap/include --output=dist-clap dist/gain.cmajorpatch",
     "preview": "vite preview",
     "test:unit:watch": "vitest",
     "test:unit": "vitest run",
