@@ -8,6 +8,8 @@
     "manufacturer":     "Loowps",
     "isInstrument":     false,
 
+    "resources":       ["*.css"],
+
     "source":           "Gain.cmajor",
 
     "view":             {
