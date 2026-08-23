@@ -9,19 +9,20 @@ import LevelMeterComponent from '@/components/LevelMeterComponent.vue'
 
 const patchConnection = inject<PatchConnection>('patchConnection')
 
-const { gain } = storeToRefs(useParameterStore())
-const { setGain } = useParameterStore()
+const parameterStore = useParameterStore()
+const { gain } = storeToRefs(parameterStore)
 
 const levels = ref<number[]>([0, 0])
 
-patchConnection?.addParameterListener(PatchConnectionEndpoint.Gain, (newValue: number) => {
-  setGain(newValue)
-})
+function onGainChange(newValue: number) {
+  parameterStore.setGain(newValue)
+}
 
 function onLevelChange(newLevels: number[]) {
   levels.value = newLevels
 }
 
+patchConnection?.addParameterListener(PatchConnectionEndpoint.Gain, onGainChange)
 patchConnection?.addEndpointListener(PatchConnectionEndpoint.Level, onLevelChange)
 
 onMounted(() => {
@@ -29,46 +30,56 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
+  endValueChange()
+  patchConnection?.removeParameterListener(PatchConnectionEndpoint.Gain, onGainChange)
   patchConnection?.removeEndpointListener(PatchConnectionEndpoint.Level, onLevelChange)
 })
 
-function beginValueChange() {
-  patchConnection?.sendParameterGestureStart(PatchConnectionEndpoint.Gain)
-}
+let gestureIsOpen = false
 
 function endValueChange() {
+  if (!gestureIsOpen) {
+    return
+  }
+
+  gestureIsOpen = false
+  window.removeEventListener('pointerup', endValueChange)
+  window.removeEventListener('pointercancel', endValueChange)
   patchConnection?.sendParameterGestureEnd(PatchConnectionEndpoint.Gain)
 }
 
-function onMouseUp() {
-  window.removeEventListener('pointerup', onMouseUp)
-  endValueChange()
-}
-
-function onMouseDown(event: MouseEvent) {
-  if (event.detail === 2) {
+function beginValueChange(event: PointerEvent) {
+  if (gestureIsOpen || event.detail === 2) {
     return
   }
-  beginValueChange()
-  window.addEventListener('pointerup', onMouseUp)
+
+  gestureIsOpen = true
+  window.addEventListener('pointerup', endValueChange)
+  window.addEventListener('pointercancel', endValueChange)
+  patchConnection?.sendParameterGestureStart(PatchConnectionEndpoint.Gain)
 }
 
-let prevValue = -1
-const onValueChange = (newValue: number) => {
-  if (prevValue !== newValue) {
-    prevValue = newValue
-    patchConnection?.sendEventOrValue(PatchConnectionEndpoint.Gain, newValue)
+let lastSentGain = -1
+
+function onGainInput(newValue: number) {
+  parameterStore.setGain(newValue)
+
+  if (lastSentGain === newValue) {
+    return
   }
+
+  lastSentGain = newValue
+  patchConnection?.sendEventOrValue(PatchConnectionEndpoint.Gain, newValue)
 }
 </script>
 
 <template>
   <main>
     <SliderComponent
-      v-model="gain"
+      :model-value="gain"
       label="Gain"
-      @mouse-down="onMouseDown"
-      @value-change="onValueChange"
+      @pointer-down="beginValueChange"
+      @update:model-value="onGainInput"
     />
     <LevelMeterComponent :levels="levels" />
   </main>

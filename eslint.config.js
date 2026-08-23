@@ -1,9 +1,10 @@
 import eslint from '@eslint/js'
 import eslintPluginVue from 'eslint-plugin-vue'
+import eslintPluginPlaywright from 'eslint-plugin-playwright'
 import typescriptEslint from 'typescript-eslint'
 
 export default typescriptEslint.config(
-  { ignores: ['*.d.ts', '**/coverage', '**/dist'] },
+  { ignores: ['*.d.ts', '**/coverage', '**/dist', '**/playwright-report', '**/test-results'] },
   {
     extends: [
       eslint.configs.recommended,
@@ -17,9 +18,17 @@ export default typescriptEslint.config(
       parserOptions: {
         parser: typescriptEslint.parser
       }
-    },
+    }
+  },
+  {
+    // Mirrors the untyped Cmajor patch connection API.
+    files: ['src/models/patch-connection.model.ts'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off'
     }
+  },
+  {
+    ...eslintPluginPlaywright.configs['flat/recommended'],
+    files: ['e2e/**/*.spec.ts']
   }
 )

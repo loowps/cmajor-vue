@@ -1,43 +1,33 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, useId } from 'vue'
 
-const { label = '' } = defineProps({
-  label: String
-})
+const { label = '' } = defineProps<{
+  label?: string
+}>()
+
 const model = defineModel<number>({ required: true })
 
 const emit = defineEmits<{
-  mouseDown: [MouseEvent]
-  valueChange: [number]
+  pointerDown: [PointerEvent]
 }>()
 
-const value = computed(() => {
-  return model.value * 100 + '%'
-})
+const sliderId = useId()
 
-const onMouseDown = (evt: MouseEvent) => {
-  emit('mouseDown', evt)
-}
-
-const onValueChange = (evt: Event) => {
-  const el = evt.target as HTMLInputElement
-  emit('valueChange', Number(el.value))
-}
+const filledWidth = computed(() => model.value * 100 + '%')
 </script>
 
 <template>
   <div class="slider-wrapper">
-    <label for="slider">{{ label }}</label>
+    <label :for="sliderId">{{ label }}</label>
     <input
-      id="slider"
-      v-model="model"
+      :id="sliderId"
+      v-model.number="model"
       class="slider"
       type="range"
       min="0"
       max="1"
       step="0.0001"
-      @mousedown="onMouseDown"
-      @input="onValueChange"
+      @pointerdown="emit('pointerDown', $event)"
     />
   </div>
 </template>
@@ -56,7 +46,7 @@ const onValueChange = (evt: Event) => {
   outline: none;
   border-radius: 15px;
   height: 6px;
-  background: linear-gradient(to right, #3cb079 v-bind('value'), #ccc v-bind('value'));
+  background: linear-gradient(to right, #3cb079 v-bind('filledWidth'), #ccc v-bind('filledWidth'));
 }
 
 .slider:hover {
