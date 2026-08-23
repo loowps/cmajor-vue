@@ -14,9 +14,11 @@ const { setGain } = useParameterStore()
 
 const levels = ref<number[]>([0, 0])
 
-patchConnection?.addParameterListener(PatchConnectionEndpoint.Gain, (newValue: number) => {
+function onGainChange(newValue: number) {
   setGain(newValue)
-})
+}
+
+patchConnection?.addParameterListener(PatchConnectionEndpoint.Gain, onGainChange)
 
 function onLevelChange(newLevels: number[]) {
   levels.value = newLevels
@@ -29,6 +31,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
+  patchConnection?.removeParameterListener(PatchConnectionEndpoint.Gain, onGainChange)
   patchConnection?.removeEndpointListener(PatchConnectionEndpoint.Level, onLevelChange)
 })
 

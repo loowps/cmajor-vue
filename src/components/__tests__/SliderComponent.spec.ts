@@ -39,11 +39,11 @@ describe('SliderComponent', () => {
     expect(wrapper.emitted('mouseDown')).toHaveLength(1)
   })
 
-  it('updates the model when the value is dragged', async () => {
+  it('updates the model with a number when the value is dragged', async () => {
     const wrapper = mountSlider()
 
     await wrapper.get('input').setValue('0.75')
 
-    expect(wrapper.emitted('update:modelValue')).toHaveLength(1)
+    expect(wrapper.emitted('update:modelValue')).toEqual([[0.75]])
   })
 })

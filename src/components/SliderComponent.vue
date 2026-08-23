@@ -30,7 +30,7 @@ const onValueChange = (evt: Event) => {
     <label for="slider">{{ label }}</label>
     <input
       id="slider"
-      v-model="model"
+      v-model.number="model"
       class="slider"
       type="range"
       min="0"

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import ToolbarComponent from '@/components/ToolbarComponent.vue'
-import pkg from '../package.json'
+import { version } from '../package.json'
 </script>
 
 <template>
@@ -16,7 +16,7 @@ import pkg from '../package.json'
       </RouterView>
     </div>
 
-    <footer>v{{ pkg.version }}</footer>
+    <footer>v{{ version }}</footer>
   </div>
 </template>
 

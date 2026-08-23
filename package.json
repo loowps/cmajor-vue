@@ -21,7 +21,7 @@
     "type-check": "vue-tsc --build --force",
     "type-check-watch": "vue-tsc --build --force --watch",
     "lint": "eslint",
-    "format": "prettier --write src/"
+    "format": "prettier --write ."
   },
   "dependencies": {
     "pinia": "^4.0.3",
@@ -35,7 +35,6 @@
     "@types/jsdom": "^30.0.0",
     "@types/node": "^26.2.0",
     "@vitejs/plugin-vue": "^6.0.8",
-    "@vue/eslint-config-typescript": "^14.9.0",
     "@vue/test-utils": "^2.4.11",
     "@vue/tsconfig": "^0.9.1",
     "eslint": "^10.9.0",

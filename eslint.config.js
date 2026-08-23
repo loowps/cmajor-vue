@@ -1,5 +1,6 @@
 import eslint from '@eslint/js'
 import eslintPluginVue from 'eslint-plugin-vue'
+import eslintPluginPlaywright from 'eslint-plugin-playwright'
 import typescriptEslint from 'typescript-eslint'
 
 export default typescriptEslint.config(
@@ -21,5 +22,9 @@ export default typescriptEslint.config(
     rules: {
       '@typescript-eslint/no-explicit-any': 'off'
     }
+  },
+  {
+    ...eslintPluginPlaywright.configs['flat/recommended'],
+    files: ['e2e/**/*.spec.ts']
   }
 )
