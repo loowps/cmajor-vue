@@ -1,8 +1,6 @@
 import type { PatchConnectionEndpoint } from '@/models/patch-connection-endpoints.enum'
 
 export interface PatchConnection {
-  // region Status-handling methods
-
   /**
    * Calling this will trigger an asynchronous callback to any status listeners with the patch's current state.
    * Use addStatusListener() to attach a listener to receive it.
@@ -29,10 +27,6 @@ export interface PatchConnection {
    * Causes the patch to be reset to its "just loaded" state.
    */
   resetToInitialState(): void
-
-  // endregion
-
-  // region Methods for sending data to input endpoints
 
   /**
    * Sends a value to one of the patch's input endpoints. This can be used to send a value to either an 'event'
@@ -68,10 +62,6 @@ export interface PatchConnection {
    * The gesture calls must always be matched (a GestureEnd action must eventually follow a GestureStart action).
    */
   sendParameterGestureEnd(endpointID: PatchConnectionEndpoint): void
-
-  // endregion
-
-  // region Stored state control methods
 
   /**
    * Requests a callback to any stored-state value listeners with the current value of a given key-value pair.
@@ -118,10 +108,6 @@ export interface PatchConnection {
    * @param callback
    */
   requestFullStoredState(callback: (fullStoredState: any) => void): void
-
-  // endregion
-
-  // region Listener methods
 
   /**
    * Attaches a listener function which will receive updates with the events or audio data being
@@ -194,8 +180,6 @@ export interface PatchConnection {
     listener: (args: { endpointID: PatchConnectionEndpoint; value: any }) => void
   ): void
 
-  // region Asset handling methods
-
   /**
    * This takes a relative path to an asset within the patch bundle, and converts it to a path relative
    * to the root of the browser that is showing the view. You need you use this in your view code
@@ -206,6 +190,4 @@ export interface PatchConnection {
    * @param path
    */
   getResourceAddress(path: string): string
-
-  // endregion
 }

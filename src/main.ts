@@ -1,4 +1,4 @@
-import './assets/main.css'
+import './assets/base.css'
 import { createApp, type App as VueApplication } from 'vue'
 import { createPinia } from 'pinia'
 import router from '@/router'

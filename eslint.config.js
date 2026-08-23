@@ -18,7 +18,11 @@ export default typescriptEslint.config(
       parserOptions: {
         parser: typescriptEslint.parser
       }
-    },
+    }
+  },
+  {
+    // Mirrors the untyped Cmajor patch connection API.
+    files: ['src/models/patch-connection.model.ts'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off'
     }

@@ -23,20 +23,32 @@ describe('SliderComponent', () => {
     expect(input.attributes('max')).toBe('1')
   })
 
-  it('emits valueChange with a number when the value is dragged', async () => {
+  it('points its label at its own input', () => {
     const wrapper = mountSlider()
 
-    await wrapper.get('input').setValue('0.75')
-
-    expect(wrapper.emitted('valueChange')).toEqual([[0.75]])
+    expect(wrapper.get('label').attributes('for')).toBe(wrapper.get('input').attributes('id'))
   })
 
-  it('emits mouseDown so the host can start an automation gesture', async () => {
+  it('gives sibling sliders distinct input ids', () => {
+    const wrapper = mount({
+      components: { SliderComponent },
+      template: `
+        <SliderComponent label="A" :model-value="0" />
+        <SliderComponent label="B" :model-value="0" />
+      `
+    })
+
+    const [first, second] = wrapper.findAll('input')
+
+    expect(first.attributes('id')).not.toBe(second.attributes('id'))
+  })
+
+  it('emits pointerDown so the host can start an automation gesture', async () => {
     const wrapper = mountSlider()
 
-    await wrapper.get('input').trigger('mousedown')
+    await wrapper.get('input').trigger('pointerdown')
 
-    expect(wrapper.emitted('mouseDown')).toHaveLength(1)
+    expect(wrapper.emitted('pointerDown')).toHaveLength(1)
   })
 
   it('updates the model with a number when the value is dragged', async () => {
@@ -45,5 +57,13 @@ describe('SliderComponent', () => {
     await wrapper.get('input').setValue('0.75')
 
     expect(wrapper.emitted('update:modelValue')).toEqual([[0.75]])
+  })
+
+  it('does not emit while the model is changed from outside', async () => {
+    const wrapper = mountSlider()
+
+    await wrapper.setProps({ modelValue: 0.9 })
+
+    expect(wrapper.emitted('update:modelValue')).toBeUndefined()
   })
 })
